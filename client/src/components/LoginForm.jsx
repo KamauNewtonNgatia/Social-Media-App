@@ -35,7 +35,9 @@ function LoginForm({ onClose = () => {} }) {
       }, 300); // Allow the toast to be shown before navigating
     },
     onError: (error) => {
-      toast.error(error.message || "An unexpected error occurred", { duration: 3000 });
+      toast.error(error.message || "An unexpected error occurred", {
+        duration: 3000,
+      });
     },
   });
 
@@ -70,14 +72,19 @@ function LoginForm({ onClose = () => {} }) {
           >
             X
           </button>
-          <h2 className="text-2xl font-bold mb-4 text-center">Sign In to Your Account</h2>
+          <h2 className="text-2xl font-bold mb-4 text-center">
+            Sign In to Your Account
+          </h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <Toaster position="bottom-center" richColors />
 
             {/* Email Input */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Email
               </label>
               <input
@@ -92,7 +99,10 @@ function LoginForm({ onClose = () => {} }) {
 
             {/* Password Input */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Password
               </label>
               <input
@@ -117,7 +127,10 @@ function LoginForm({ onClose = () => {} }) {
             </button>
 
             {/* Link to Sign-Up */}
-            <Link to="/signup" className="block text-center text-sm text-blue-500 hover:text-blue-700">
+            <Link
+              to="/signup"
+              className="block text-center text-sm text-blue-500 hover:text-blue-700"
+            >
               Don’t have an account? Sign up
             </Link>
           </form>

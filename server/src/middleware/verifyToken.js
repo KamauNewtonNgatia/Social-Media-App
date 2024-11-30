@@ -4,10 +4,10 @@ function verifyToken(req, res, next) {
   const { authToken } = req.cookies;
 
   if (!authToken) {
-    res.status(400).json({message: "Unauthorised to perform this action"});
+    res.status(400).json({ message: "Unauthorised to perform this action" });
     return;
   }
-  
+
   jwt.verify(authToken, process.env.JWT_SECRET, (err, decoded) => {
     if (err) {
       res.status(401).json({ message: "Unauthorized" });

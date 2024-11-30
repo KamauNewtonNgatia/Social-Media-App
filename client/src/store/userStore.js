@@ -2,9 +2,9 @@ import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
 const userStore = (set, get) => ({
-  user:{},
+  user: {},
 
-  addUser: (data) => set({user:data}),
+  addUser: (data) => set({ user: data }),
 
   resetUser: () => set({ user: {} }),
 });
@@ -12,4 +12,3 @@ const userStore = (set, get) => ({
 const useUserStore = create(devtools(persist(userStore, { name: "user" })));
 
 export default useUserStore;
-

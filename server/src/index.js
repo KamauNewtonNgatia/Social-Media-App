@@ -12,7 +12,10 @@ import {
   deletePosts,
 } from "./controllers/post.controllers.js";
 import verifyToken from "./middleware/verifyToken.js";
-import { createProfile, getUserProfile } from "./controllers/profile.controllers.js";
+import {
+  createProfile,
+  getUserProfile,
+} from "./controllers/profile.controllers.js";
 
 const app = express();
 const client = new PrismaClient();
@@ -25,7 +28,7 @@ app.use(
     origin: ["http://localhost:5173"], // Adjust to match your frontend origin
     methods: ["POST", "PATCH", "GET", "PUT", "DELETE"],
     credentials: true,
-  })
+  }),
 );
 app.use(cookieParser());
 
@@ -45,7 +48,9 @@ app.post("/user", async (req, res) => {
       return res.status(400).json({ message: "Email is already taken" });
     }
 
-    const userWithUsername = await client.user.findFirst({ where: { username } });
+    const userWithUsername = await client.user.findFirst({
+      where: { username },
+    });
     if (userWithUsername) {
       return res.status(400).json({ message: "Username is already taken" });
     }
@@ -72,7 +77,9 @@ app.post("/auth/login", async (req, res) => {
 
     // Validate input
     if (!email || !password) {
-      return res.status(400).json({ message: "Email and password are required" });
+      return res
+        .status(400)
+        .json({ message: "Email and password are required" });
     }
 
     // Find user by email
@@ -103,18 +110,16 @@ app.post("/auth/login", async (req, res) => {
   }
 });
 
-app.post("/user/profile", verifyToken, createProfile)
-app.get("/user/:id/profile", verifyToken, getUserProfile)
+app.post("/user/profile", verifyToken, createProfile);
+app.get("/user/:id/profile", verifyToken, getUserProfile);
 
 //routes
 
-app.post("/posts", verifyToken,  createPost);
+app.post("/posts", verifyToken, createPost);
 app.get("/posts/user/:userId", verifyToken, fetchUserPosts);
 app.get("/posts/:id", verifyToken, fetchSinglePost);
 app.get("/posts", verifyToken, fetchAllPosts);
 app.delete("/posts/postId", verifyToken, deletePosts);
-
-
 
 // Start server
 app.listen(4000, () => console.log(`Server running on port 4000...`));

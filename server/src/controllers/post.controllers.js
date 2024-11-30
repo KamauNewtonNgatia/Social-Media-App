@@ -3,43 +3,43 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export async function createPost(req, res) {
-    try {
-      const { image, title, excerpt, body } = req.body;
-      const userId = req.userId; // Assuming this is set by your authentication middleware
-  
-      // Validate input
-      if (!userId) {
-        return res.status(400).json({ message: "User ID is required" });
-      }
-  
-      // Check if the user exists
-      const userExists = await prisma.user.findUnique({
-        where: { id: userId },
-      });
-  
-      if (!userExists) {
-        return res.status(404).json({ message: "User not found" });
-      }
-  
-      // Create the post
-      const newPost = await prisma.post.create({
-        data: {
-          image,
-          title,
-          excerpt,
-          body,
-          owner: userId,
-        },
-      });
-  
-      res.status(201).json(newPost);
-    } catch (e) {
-      console.error("Error creating post:", e.message);
-      res.status(500).json({ message: e.message });
+  try {
+    const { image, title, excerpt, body } = req.body;
+    const userId = req.userId;
+
+    // Validate input
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required" });
     }
+
+    // Check if the user exists
+    const userExists = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!userExists) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Create the post
+    const newPost = await prisma.post.create({
+      data: {
+        image,
+        title,
+        excerpt,
+        body,
+        user: {
+          connect: { id: userId },
+        },
+      },
+    });
+
+    res.status(201).json(newPost);
+  } catch (e) {
+    console.error("Error creating post:", e);
+    res.status(500).json({ message: "Failed to create post" });
   }
-  
-  
+}
 
 export async function fetchSinglePost(req, res) {
   try {
@@ -91,10 +91,8 @@ export async function fetchAllPosts(req, res) {
     });
     res.status(200).json(posts);
   } catch (e) {
-    console.log(e)
-    res
-      .status(500)
-      .json({ message: e.message});
+    console.log(e);
+    res.status(500).json({ message: e.message });
   }
 }
 
