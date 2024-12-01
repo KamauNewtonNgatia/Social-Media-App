@@ -8,21 +8,21 @@ datasource db {
 }
 
 model User {
-  id        String    @default(uuid()) @id
-  firstName String
-  lastName  String
-  username  String
-  email     String    @unique
-  password  String
+  id          String       @default(uuid()) @id
+  firstName   String
+  lastName    String
+  username    String
+  email       String       @unique
+  password    String
 
-  profile   Profile?
-  posts     Post[]
-  likes     Like[]
-  comments  Comment[]
-  shares    Share[]
-  followers Follow[] @relation("followers")
-  following Follow[] @relation("following")
-  sentMessages Message[] @relation("sentMessages")
+  profile     Profile?
+  posts       Post[]
+  likes       Like[]
+  comments    Comment[]
+  shares      Share[]
+  followers   Follow[]     @relation("followers")
+  following   Follow[]     @relation("following")
+  sentMessages Message[]   @relation("sentMessages")
   receivedMessages Message[] @relation("receivedMessages")
   notifications Notification[]
 
@@ -34,25 +34,25 @@ model Profile {
   profileImage String
   bio          String
 
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
 
-  @@map("profile")
+  @@map("profiles")
 }
 
 model Post {
-  id        String    @default(uuid()) @id
-  title     String
-  image     String
-  excerpt   String
-  body      String
-  userId    String
-  createdAt DateTime  @default(now())
+  id          String       @default(uuid()) @id
+  title       String
+  image       String
+  excerpt     String
+  body        String
+  userId      String
+  createdAt   DateTime     @default(now())
 
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  likes     Like[]
-  comments  Comment[]
-  shares    Share[]
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  likes       Like[]
+  comments    Comment[]
+  shares      Share[]
 
   @@map("posts")
 }
@@ -100,7 +100,7 @@ model Notification {
 }
 
 model Follow {
-  id        String   @default(uuid()) @id
+  id         String   @default(uuid()) @id
   followerId String
   followingId String
   createdAt  DateTime @default(now())

@@ -87,7 +87,13 @@ export async function fetchUserPosts(req, res) {
 export async function fetchAllPosts(req, res) {
   try {
     const posts = await prisma.post.findMany({
-      include: { user: true },
+      include: {
+        user: {
+          include: {
+            profile: true, // Include profile through the user relation
+          },
+        },
+      },
     });
     res.status(200).json(posts);
   } catch (e) {
@@ -99,14 +105,15 @@ export async function fetchAllPosts(req, res) {
 export async function deletePosts(req, res) {
   try {
     const { postId } = req.params;
-    const userId = req.userId;
-    const post = await prisma.note.delete({
-      where: {
-        id: postId,
-        owner: userId,
-      },
-    });
-    res.status(200).json({ message: "post deleted successfully" });
+    res.send(postId);
+    // const userId = req.userId;
+    // const post = await prisma.note.delete({
+    //   where: {
+    //     id: postId,
+    //     owner: userId,
+    //   },
+    // });
+    // res.status(200).json({ message: "post deleted successfully" });
   } catch (e) {
     res
       .status(500)

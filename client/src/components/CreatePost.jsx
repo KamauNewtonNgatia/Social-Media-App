@@ -20,23 +20,27 @@ const CreatePost = () => {
         withCredentials: true,
       });
       console.log(response.data);
+      // Show success toast after successfully creating a post
+      toast.success("Post created successfully!", { duration: 3000 });
+      navigate("/dashboard");
     } catch (error) {
       console.log(error);
+      // Show error toast if the request fails
+      toast.error("Failed to create post. Please try again.", {
+        duration: 3000,
+      });
     } finally {
-      toast.success("Post created successful!", { duration: 3000 });
-      navigate("/dashboard");
-      setIsLoading(false);
+      setIsLoading(false); // Stop loading regardless of success or failure
     }
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // if (!validateInputs()) return;
+    // If validation is needed, perform it here before making the request
     console.log("uploading");
     const imageUrl = await uploadCloudinary(image);
-    // console.log(res)
-
     if (imageUrl) {
       const data = {
         image: imageUrl,
@@ -45,15 +49,17 @@ const CreatePost = () => {
         body,
       };
       postData(data);
+    } else {
+      setIsLoading(false); // Stop loading if image upload failed
+      toast.error("Image upload failed. Please try again.", { duration: 3000 });
     }
   };
 
   return (
     <div>
-      <Header />
       <form
         onSubmit={handleSubmit}
-        className="space-y-6 bg-white shadow-md rounded-lg p-6 max-w-lg mx-auto bg-fuchsia-50"
+        className="space-y-6 bg-white shadow-md rounded-lg p-6 max-w-lg mx-auto "
       >
         {/* Title Input */}
         <div className="flex flex-col">
@@ -121,9 +127,7 @@ const CreatePost = () => {
         {/* Submit Button */}
         <button
           type="submit"
-          className={`w-full ${
-            isLoading ? "bg-blue-400" : "bg-blue-500 hover:bg-blue-600"
-          } text-white font-semibold py-2 rounded-md shadow-md transition`}
+          className={`w-full ${isLoading ? "bg-blue-400" : "bg-blue-500 hover:bg-blue-600"} text-white font-semibold py-2 rounded-md shadow-md transition`}
           disabled={isLoading}
         >
           {isLoading ? "Creating Post..." : "Post"}

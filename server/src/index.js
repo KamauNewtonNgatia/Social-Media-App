@@ -11,7 +11,9 @@ import {
   fetchSinglePost,
   deletePosts,
 } from "./controllers/post.controllers.js";
+import { editPersonalInfo } from "./controllers/editPersonalInfo.js";
 import verifyToken from "./middleware/verifyToken.js";
+import { editPassword } from "./controllers/passwordupdate.js";
 import {
   createProfile,
   getUserProfile,
@@ -120,6 +122,8 @@ app.get("/posts/user/:userId", verifyToken, fetchUserPosts);
 app.get("/posts/:id", verifyToken, fetchSinglePost);
 app.get("/posts", verifyToken, fetchAllPosts);
 app.delete("/posts/postId", verifyToken, deletePosts);
+app.patch("/edit-personal-info", verifyToken, editPersonalInfo);
+app.patch("/update-password", verifyToken, editPassword);
 
 // Start server
 app.listen(4000, () => console.log(`Server running on port 4000...`));

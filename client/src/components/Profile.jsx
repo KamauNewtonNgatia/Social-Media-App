@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-import image1 from "../assets/hero-img.webp";
 import useUserStore from "../store/userStore";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import PostCard from "./PostCard";
-import Header from "./Header";
 
 function Profile() {
   const { user, resetUser } = useUserStore();
@@ -63,7 +61,7 @@ function Profile() {
 
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <div></div>
       <div className="min-h-screen bg-gray-100">
         <div className="p-6 max-w-4xl mx-auto bg-white rounded-lg shadow-md">
@@ -127,6 +125,8 @@ function Profile() {
               {userPosts &&
                 userPosts.map((post, i) => (
                   <PostCard
+                    postId={post.id}
+                    owner={true}
                     key={i}
                     title={post.title}
                     excerpt={post.excerpt}
